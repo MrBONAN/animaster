@@ -17,10 +17,22 @@ function addListeners() {
             animaster().move(block, 1000, {x: 100, y: 10});
         });
 
-        document.getElementById('scalePlay')
+    document.getElementById('scalePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('scaleBlock');
             animaster().scale(block, 1000, 1.25);
+        });
+
+    document.getElementById('moveAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveAndHideBlock');
+            animaster().moveAndHide(block, 1000, {x: 100, y: 20});
+        });
+
+    document.getElementById('showAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('showAndHideBlock');
+            animaster().showAndHide(block, 1000);
         });
 }
 
@@ -67,6 +79,38 @@ function animaster() {
     function scale(element, duration, ratio) {
         element.style.transitionDuration = `${duration}ms`;
         element.style.transform = getTransform(null, ratio);
+    }
+
+    /**
+     * Блок плавно появляется из прозрачного.
+     * @param element — HTMLElement, который надо анимировать
+     * @param duration — Продолжительность анимации в миллисекундах
+     * @param translation — объект с полями x и y, обозначающими смещение блока
+     */
+    function moveAndHide(element, duration, translation) {
+        this.move(element, duration * 2 / 5, translation);
+        this.fadeOut(element, duration * 3 / 5);
+    }
+
+    /**
+     * Блок плавно появляется из прозрачного.
+     * @param element — HTMLElement, который надо анимировать
+     * @param duration — Продолжительность анимации в миллисекундах
+     */
+    function showAndHide(element, duration) {
+        this.fadeIn(element, duration / 3);
+        setTimeout(() => this.fadeOut(element, duration / 3), 1000 / 3);
+    }
+
+    /**
+     * Блок плавно появляется из прозрачного.
+     * @param element — HTMLElement, который надо анимировать
+     * @param duration — Продолжительность анимации в миллисекундах
+     */
+    function heartBeating(element, duration) {
+        element.style.transitionDuration = `${duration}ms`;
+        element.classList.remove('show');
+        element.classList.add('hide');
     }
 
     let obj = {}

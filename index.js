@@ -14,7 +14,8 @@ function addListeners() {
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
-            animaster().move(block, 1000, {x: 100, y: 10});
+            // animaster().move(block, 1000, {x: 100, y: 10});
+            animaster().addMove(1000, {x: 100, y: 10}).play(block);
         });
 
     document.getElementById('scalePlay')
@@ -77,6 +78,32 @@ function animaster() {
         element.style.transform = getTransform(translation, null);
     }
 
+    const _steps = []
+
+    /**
+     * Функция, передвигающая элемент
+     * @param duration — Продолжительность анимации в миллисекундах
+     * @param translation — объект с полями x и y, обозначающими смещение блока
+     */
+    function addMove(duration, translation) {
+        _steps.push({name: 'move', duration: duration, args: translation});
+        return this;
+    }
+
+    /**
+     * Функция, передвигающая элемент
+     * @param element — HTMLElement, который надо анимировать
+     */
+    function play(element) {
+        for (const { name, duration, args } of _steps) {
+            switch (name) {
+                case 'move':
+                    move(element, duration, args);
+                    break;
+            }
+        }
+    }
+
     /**
      * Функция, увеличивающая/уменьшающая элемент
      * @param element — HTMLElement, который надо анимировать
@@ -128,6 +155,8 @@ function animaster() {
     obj.moveAndHide = moveAndHide;
     obj.showAndHide = showAndHide;
     obj.heartBeating = heartBeating;
+    obj.addMove = addMove;
+    obj.play = play;
 
     return obj;
 }

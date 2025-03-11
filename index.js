@@ -34,6 +34,13 @@ function addListeners() {
             const block = document.getElementById('showAndHideBlock');
             animaster().showAndHide(block, 1000);
         });
+
+    document.getElementById('resetMoveAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveAndHideBlock');
+            resetMoveAndScale(block);
+            resetFadeOut(block)
+        });
 }
 
 function animaster() {
@@ -124,6 +131,36 @@ function animaster() {
 
     return obj;
 }
+
+/**
+ * Блок плавно появляется из прозрачного.
+ * @param element — HTMLElement, который надо сбросить к заводским настройкам
+ */
+function resetFadeIn(element) {
+    element.style.transitionDuration = null;
+    element.classList.remove('show');
+    element.classList.add('hide');
+}
+
+/**
+ * Блок плавно появляется из прозрачного.
+ * @param element — HTMLElement, который надо сбросить к заводским настройкам
+ */
+function resetFadeOut(element) {
+    element.style.transitionDuration = null;
+    element.classList.remove('hide');
+    element.classList.add('show');
+}
+
+/**
+ * Блок плавно появляется из прозрачного.
+ * @param element — HTMLElement, который надо сбросить к заводским настройкам
+ */
+function resetMoveAndScale(element) {
+    element.style.transitionDuration = null;
+    element.style.transform = null;
+}
+
 
 function getTransform(translation, ratio) {
     const result = [];

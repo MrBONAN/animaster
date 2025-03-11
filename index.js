@@ -45,7 +45,6 @@ function animaster() {
         element.style.transitionDuration = `${duration}ms`;
         element.classList.remove('show');
         element.classList.add('hide');
-        
     }
 
     /**
@@ -75,6 +74,9 @@ function animaster() {
     obj.fadeOut = fadeOut;
     obj.move = move;
     obj.scale = scale;
+    obj.moveAndHide = moveAndHide;
+    obj.showAndHide = showAndHide;
+    obj.heartBeating = heartBeating;
 
     return obj;
 }

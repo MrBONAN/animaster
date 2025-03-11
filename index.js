@@ -15,7 +15,6 @@ function addListeners() {
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
             animaster().move(block, 1000, {x: 100, y: 10});
-            // animaster().addMove(1000, {x: 100, y: 10}).play(block);
         });
 
     document.getElementById('scalePlay')
@@ -35,6 +34,22 @@ function addListeners() {
             const block = document.getElementById('showAndHideBlock');
             animaster().showAndHide(block, 1000);
         });
+
+    let heartBeatingAnimation = null;
+    document.getElementById('heartBeatingPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('heartBeatingBlock');
+            if (heartBeatingAnimation !== null) {
+                heartBeatingAnimation.stop();
+            }
+            heartBeatingAnimation = animaster().heartBeating(block, 1000);
+        });
+
+    document.getElementById('heartBeatingStop')
+        .addEventListener('click', function () {
+            heartBeatingAnimation.stop();
+        });
+
 
     document.getElementById('resetMoveAndHidePlay')
         .addEventListener('click', function () {
@@ -169,14 +184,28 @@ function animaster() {
      * @param duration — Продолжительность анимации в миллисекундах
      */
     function heartBeating(element, duration) {
-        element.style.transitionDuration = `${duration}ms`;
-        element.classList.remove('show');
-        element.classList.add('hide');
+        element.style.transitionDuration = `${duration / 2}ms`;
+        setInterval(() => {
+            if (this.cycled !== true) {
+                return
+            }
+
+            element.style.transform = getTransform(null, 1.4);
+            setTimeout(() => element.style.transform = getTransform(null, 1), duration / 2);
+        }, duration);
+
+        return this;
+    }
+
+    function stop() {
+        this.cycled = false;
     }
 
     let obj = {
-        _steps: []
+        _steps: [],
+        cycled: true,
     }
+
     obj.fadeIn = fadeIn;
     obj.fadeOut = fadeOut;
     obj.move = move;
@@ -189,6 +218,7 @@ function animaster() {
     obj.addFadeIn = addFadeIn;
     obj.addFadeOut = addFadeOut;
     obj.play = play;
+    obj.stop = stop;
 
     return obj;
 }

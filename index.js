@@ -14,8 +14,8 @@ function addListeners() {
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
-            // animaster().move(block, 1000, {x: 100, y: 10});
-            animaster().addMove(1000, {x: 100, y: 10}).play(block);
+            animaster().move(block, 1000, {x: 100, y: 10});
+            // animaster().addMove(1000, {x: 100, y: 10}).play(block);
         });
 
     document.getElementById('scalePlay')
@@ -74,11 +74,8 @@ function animaster() {
      * @param translation — объект с полями x и y, обозначающими смещение блока
      */
     function move(element, duration, translation) {
-        element.style.transitionDuration = `${duration}ms`;
-        element.style.transform = getTransform(translation, null);
+        this.addMove(duration, translation).play(element);
     }
-
-    const _steps = []
 
     /**
      * Функция, передвигающая элемент
@@ -86,7 +83,7 @@ function animaster() {
      * @param translation — объект с полями x и y, обозначающими смещение блока
      */
     function addMove(duration, translation) {
-        _steps.push({name: 'move', duration: duration, args: translation});
+        this._steps.push({name: 'move', duration: duration, args: translation});
         return this;
     }
 
@@ -95,10 +92,11 @@ function animaster() {
      * @param element — HTMLElement, который надо анимировать
      */
     function play(element) {
-        for (const { name, duration, args } of _steps) {
+        for (const {name, duration, args} of this._steps) {
             switch (name) {
                 case 'move':
-                    move(element, duration, args);
+                    element.style.transitionDuration = `${duration}ms`;
+                    element.style.transform = getTransform(args, null);
                     break;
             }
         }
@@ -147,7 +145,9 @@ function animaster() {
         element.classList.add('hide');
     }
 
-    let obj = {}
+    let obj = {
+        _steps: []
+    }
     obj.fadeIn = fadeIn;
     obj.fadeOut = fadeOut;
     obj.move = move;

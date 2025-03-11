@@ -6,14 +6,18 @@ function addListeners() {
             const block = document.getElementById('fadeInBlock');
             animaster().fadeIn(block, 5000);
         });
-
+    document.getElementById('fadeOutPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('fadeOutBlock');
+            animaster().fadeOut(block, 5000);
+        });
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
             animaster().move(block, 1000, {x: 100, y: 10});
         });
 
-    document.getElementById('scalePlay')
+        document.getElementById('scalePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('scaleBlock');
             animaster().scale(block, 1000, 1.25);
@@ -30,6 +34,18 @@ function animaster() {
         element.style.transitionDuration = `${duration}ms`;
         element.classList.remove('hide');
         element.classList.add('show');
+    }
+
+    /**
+     * Блок плавно появляется из прозрачного.
+     * @param element — HTMLElement, который надо анимировать
+     * @param duration — Продолжительность анимации в миллисекундах
+     */
+    function fadeOut(element, duration) {
+        element.style.transitionDuration = `${duration}ms`;
+        element.classList.remove('show');
+        element.classList.add('hide');
+        
     }
 
     /**
@@ -56,6 +72,7 @@ function animaster() {
 
     let obj = {}
     obj.fadeIn = fadeIn;
+    obj.fadeOut = fadeOut;
     obj.move = move;
     obj.scale = scale;
 
